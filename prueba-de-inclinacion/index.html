@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Inclinación — NavRule</title>
+<meta name="description" content="NavRule automatiza el cálculo completo de una prueba de inclinación naval: pesos y movimientos, péndulos y gradiente, GM por regresión, buque en rosca e informe final listo para presentar.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy-deep:#091c2e;--navy:#0d2137;--navy-light:#132d4a;--navy-mid:#173a5e;--orange:#ff6b1a;--orange-dk:#e85f14;--ink:#1a2535;--muted:#5a6a7e;--line:#dde3ea;--bg:#f6f8fa}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:var(--navy);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:18px;letter-spacing:.02em;text-decoration:none}
+.brand svg{display:block}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:rgba(255,255,255,.72);font-size:13.5px;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#fff}
+.nav-links a.active{color:#fff}
+.nav-cta{background:var(--orange);color:#fff !important;padding:9px 18px;border-radius:7px;font-weight:700 !important}
+.nav-cta:hover{background:var(--orange-dk)}
+
+/* HERO */
+.hero{background:radial-gradient(ellipse at 50% -10%,var(--navy-mid) 0%,var(--navy) 55%,var(--navy-deep) 100%);color:#fff;padding:88px 0 96px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0px,rgba(255,255,255,.025) 1px,transparent 1px,transparent 34px);pointer-events:none}
+.hero .wrap{position:relative;text-align:center}
+.eyebrow{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);background:rgba(255,107,26,.12);border:1px solid rgba(255,107,26,.3);padding:6px 14px;border-radius:20px;margin-bottom:22px}
+.hero h1{font-size:44px;font-weight:800;letter-spacing:-.01em;max-width:820px;margin:0 auto 20px}
+.hero h1 span{color:var(--orange)}
+.hero p.lead{font-size:17px;color:rgba(255,255,255,.72);max-width:600px;margin:0 auto 34px}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 28px;border-radius:8px;font-weight:700;font-size:14.5px;text-decoration:none;transition:all .15s}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dk)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.hero-note{margin-top:18px;font-size:12.5px;color:rgba(255,255,255,.45)}
+
+/* PAIN POINTS */
+.section{padding:80px 0}
+.section-hd{text-align:center;max-width:640px;margin:0 auto 48px}
+.section-hd .tag{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
+.section-hd h2{font-size:30px;font-weight:800;color:var(--navy);margin-bottom:12px}
+.section-hd p{color:var(--muted);font-size:15px}
+
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pain-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px}
+.pain-card .n{font-size:12px;font-weight:800;color:var(--orange);margin-bottom:10px;letter-spacing:.05em}
+.pain-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.pain-card p{font-size:13.5px;color:var(--muted)}
+
+/* FEATURES */
+.features{background:#fff}
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.feat{padding:30px 32px;border-bottom:1px solid var(--line)}
+.feat:nth-child(odd){border-right:1px solid var(--line)}
+.feat:nth-child(5),.feat:nth-child(6){border-bottom:none}
+.feat .ico{width:38px;height:38px;border-radius:9px;background:var(--navy-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat h3{font-size:15.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.feat p{font-size:13.5px;color:var(--muted)}
+
+/* PRICING */
+.pricing{background:var(--bg)}
+.price-card{max-width:440px;margin:0 auto;background:var(--navy);color:#fff;border-radius:16px;padding:40px 38px;text-align:center;box-shadow:0 24px 60px rgba(13,33,55,.25)}
+.price-card .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);background:rgba(255,107,26,.14);padding:5px 12px;border-radius:20px;margin-bottom:18px}
+.price-card .amount{font-size:46px;font-weight:800;letter-spacing:-.02em}
+.price-card .amount sup{font-size:20px;font-weight:700;vertical-align:top;top:6px;position:relative}
+.price-card .period{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:26px}
+.price-list{list-style:none;text-align:left;margin-bottom:30px}
+.price-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,.85);margin-bottom:12px}
+.price-list li svg{flex:none;margin-top:2px}
+.price-card .btn-primary{width:100%;text-align:center;padding:15px}
+.price-fine{font-size:11.5px;color:rgba(255,255,255,.4);margin-top:16px}
+
+/* FOOTER */
+footer{background:var(--navy-deep);color:rgba(255,255,255,.5);padding:40px 0;font-size:12.5px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer a{color:rgba(255,255,255,.6);text-decoration:none}
+footer a:hover{color:#fff}
+.foot-links{display:flex;gap:22px}
+
+@media (max-width:820px){
+  .hero h1{font-size:32px}
+  .pain-grid{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .feat:nth-child(odd){border-right:none}
+  .feat:nth-child(5){border-bottom:1px solid var(--line)}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="/" class="brand">
+      <svg width="30" height="30" viewBox="0 0 100 100"><rect width="100" height="100" rx="12" fill="#ff6b1a"/><rect x="22" y="20" width="56" height="5" rx="2" fill="#fff"/><rect x="22" y="25" width="5" height="38" rx="2" fill="#fff"/><rect x="73" y="25" width="5" height="38" rx="2" fill="#fff"/><path d="M22 63 Q22 78 33 81" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M78 63 Q78 78 67 81" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><rect x="33" y="79" width="34" height="5" rx="2" fill="#fff"/><line x1="18" y1="55" x2="82" y2="55" stroke="#0d2137" stroke-width="3" stroke-dasharray="7,4" stroke-linecap="round"/></svg>
+      NavRule
+    </a>
+    <div class="nav-links">
+      <a href="/prueba-de-inclinacion" class="active">Prueba de Inclinación</a>
+      <a href="/recursos">Recursos</a>
+      <a href="/nosotros">Nosotros</a>
+      <a href="/app" class="nav-cta">Ingresar</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Herramienta NavRule · Prueba de Inclinación</span>
+    <h1>El cálculo de tu prueba de inclinación, <span>sin planillas armadas a mano</span></h1>
+    <p class="lead">NavRule carga los datos, calcula pesos y movimientos, péndulos y gradiente, GM por regresión y buque en rosca — y arma el informe final listo para presentar ante la autoridad certificadora.</p>
+    <div class="hero-ctas">
+      <a href="/app" class="btn btn-primary">Empezar ahora</a>
+      <a href="#funciones" class="btn btn-ghost">Ver qué incluye</a>
+    </div>
+    <div class="hero-note">Pase de 30 días de acceso completo · Pago único, sin abono</div>
+  </div>
+</header>
+
+<section class="section" id="problema">
+  <div class="wrap">
+    <div class="section-hd">
+      <span class="tag">Por qué existe esta herramienta</span>
+      <h2>Los errores más comunes no son de cálculo — son de proceso</h2>
+      <p>Una prueba de inclinación bien ejecutada se puede arruinar en la planilla. Estos son los puntos donde más se pierde precisión.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="n">01</div>
+        <h3>Verificación fuera de tiempo</h3>
+        <p>Sin control en tiempo real durante la prueba, un desvío excesivo en un movimiento se descubre recién en el escritorio — cuando ya no hay forma de repetirlo.</p>
+      </div>
+      <div class="pain-card">
+        <div class="n">02</div>
+        <h3>Momentos acumulados vs. individuales</h3>
+        <p>Mezclar ambos criterios al analizar el gradiente de la prueba distorsiona el GM final sin que se note a simple vista.</p>
+      </div>
+      <div class="pain-card">
+        <div class="n">03</div>
+        <h3>Descarte de movimientos sin criterio</h3>
+        <p>Descartar el 4º movimiento (u otro) sin una regla objetiva de desvío excesivo introduce un sesgo difícil de justificar ante el certificador.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section features" id="funciones">
+  <div class="wrap">
+    <div class="section-hd">
+      <span class="tag">Qué hace</span>
+      <h2>Todo el flujo de la prueba, en una sola herramienta</h2>
+      <p>Desde los datos previos del buque hasta el informe final, con las fórmulas y gráficos que exige el proceso.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div>
+        <h3>Datos previos del buque</h3>
+        <p>Hidrostáticas, calados, tanques y densidades — con transposición automática de calados y cálculo de desplazamiento.</p>
+      </div>
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Pesos y movimientos</h3>
+        <p>Ubicación inicial de cada peso de prueba y registro de cada movimiento con su distancia real, sin inversión automática de banda.</p>
+      </div>
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><path d="M4 19V5M4 5l4 4M4 5L0 9"/><path d="M20 5v14M20 19l-4-4M20 19l4-4"/></svg></div>
+        <h3>Péndulos y gradiente</h3>
+        <p>Lecturas por péndulo, cálculo de gradiente, criterio de desvío excesivo configurable (4% / 5%) y exclusión justificada de movimientos.</p>
+      </div>
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg></div>
+        <h3>GM por regresión</h3>
+        <p>Recta de regresión sobre elongaciones con intervalo de confianza del 95%, además del método directo de la prueba.</p>
+      </div>
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg></div>
+        <h3>Buque en rosca (Light Ship)</h3>
+        <p>Cálculo completo del Light Ship con centro de gravedad, lastre permanente y verificación de escora inicial.</p>
+      </div>
+      <div class="feat">
+        <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg></div>
+        <h3>Informe final</h3>
+        <p>Documento completo, numerado y listo para imprimir o descargar, armado automáticamente con todos los datos cargados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pricing" id="precio">
+  <div class="wrap">
+    <div class="section-hd">
+      <span class="tag">Precio</span>
+      <h2>Un pase, no un abono</h2>
+      <p>Pensado para el ritmo real de trabajo de un ingeniero naval: unas pocas pruebas al año, no un uso constante.</p>
+    </div>
+    <div class="price-card">
+      <span class="badge">Pase de 30 días</span>
+      <div class="amount">$75.000<sup>*</sup></div>
+      <div class="period">pesos argentinos (ARS) · pago único</div>
+      <ul class="price-list">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Acceso completo a las 3 etapas: Datos Previos, Cálculos e Informe</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> 30 días para cargar y recalcular todas las pruebas que necesites</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Informe final descargable e imprimible, sin marca de agua</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Pago seguro con MercadoPago</li>
+      </ul>
+      <a href="/app" class="btn btn-primary">Comprar acceso</a>
+      <div class="price-fine">*Precio de lanzamiento. Se actualiza periódicamente.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 NavRule · Naval Engineering Tools</div>
+    <div class="foot-links">
+      <a href="/">Inicio</a>
+      <a href="/app">Ingresar</a>
+      <a href="mailto:jccubisino@gmail.com">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

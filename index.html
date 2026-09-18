@@ -58,12 +58,14 @@ a{color:inherit}
 
 /* PRODUCT SPOTLIGHT */
 .spotlight{background:#fff}
-.spot-card{display:flex;align-items:center;gap:40px;background:var(--navy);color:#fff;border-radius:16px;padding:44px 46px;box-shadow:0 24px 60px rgba(13,33,55,.2)}
-.spot-text{flex:1}
-.spot-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);background:rgba(255,107,26,.14);padding:5px 12px;border-radius:20px;margin-bottom:16px}
-.spot-text h3{font-size:24px;font-weight:800;margin-bottom:12px}
-.spot-text p{font-size:14.5px;color:rgba(255,255,255,.72);margin-bottom:22px;max-width:480px}
-.spot-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.spot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.spot-card{display:flex;flex-direction:column;background:var(--navy);color:#fff;border-radius:16px;padding:36px 34px;box-shadow:0 24px 60px rgba(13,33,55,.2)}
+.spot-tag{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.02em;color:#fff;background:rgba(255,107,26,.22);padding:6px 14px;border-radius:8px;margin-bottom:16px;width:fit-content}
+.spot-tag-calcgm{color:var(--orange)}
+.spot-tag-optima{color:#6fc3ff;background:rgba(111,195,255,.14)}
+.spot-card h3{font-size:22px;font-weight:800;margin-bottom:12px}
+.spot-card p{font-size:14px;color:rgba(255,255,255,.72);margin-bottom:22px}
+.spot-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
 .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
 .btn-outline:hover{background:rgba(255,255,255,.1)}
 
@@ -98,10 +100,8 @@ footer a:hover{color:#fff}
       <svg class="brand-logo" viewBox="30 370 430 110" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="370" width="430" height="110" rx="14" fill="#0d2137"/><rect x="58" y="388" width="74" height="5.5" rx="2" fill="#ffffff"/><rect x="58" y="393.5" width="5.5" height="56" rx="2" fill="#ffffff"/><rect x="126.5" y="393.5" width="5.5" height="56" rx="2" fill="#ffffff"/><path d="M58 449.5 Q58 470 73 474" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/><path d="M132 449.5 Q132 470 117 474" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/><rect x="73" y="472" width="44" height="5.5" rx="2" fill="#ffffff"/><line x1="33" y1="462" x2="152" y2="462" stroke="#ff6b1a" stroke-width="2.5" stroke-dasharray="6,4" stroke-linecap="round"/><text x="163" y="422" font-family="sans-serif" font-size="30" font-weight="700"><tspan fill="#ff6b1a" letter-spacing="-1">=Nav</tspan><tspan fill="#ffffff">Rule</tspan></text><text x="163" y="444" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.55)" letter-spacing="0.15em">NAVAL ENGINEERING TOOLS</text></svg>
     </a>
     <div class="nav-links">
-      <a href="/prueba-de-inclinacion">Prueba de Inclinación</a>
       <a href="/recursos">Recursos</a>
       <a href="/nosotros">Nosotros</a>
-      <a href="/app" class="nav-cta">Ingresar</a>
     </div>
   </div>
 </nav>
@@ -124,17 +124,13 @@ footer a:hover{color:#fff}
     <span class="eyebrow">Ingeniería Naval</span>
     <h1>Conocimiento técnico y herramientas profesionales para la <span>ingeniería naval</span></h1>
     <p class="lead">Un espacio de referencia para la comunidad naval: artículos especializados, buenas prácticas y software desarrollado para la práctica diaria de la disciplina.</p>
-    <div class="hero-ctas">
-      <a href="/prueba-de-inclinacion" class="btn btn-primary">Ver herramientas</a>
-      <a href="/nosotros" class="btn btn-ghost">Conocer más</a>
-    </div>
   </div>
 </header>
 
 <section class="section" id="que-encontras">
   <div class="wrap">
     <div class="section-hd">
-      <span class="tag">Qué encontrás en NavRule</span>
+      <span class="tag">Qué encontrará en NavRule</span>
       <h2>Difusión técnica y herramientas, en un mismo lugar</h2>
       <p>NavRule integra la publicación de contenido especializado con software pensado para el trabajo diario del ingeniero naval.</p>
     </div>
@@ -161,17 +157,26 @@ footer a:hover{color:#fff}
 <section class="section spotlight">
   <div class="wrap">
     <div class="section-hd">
-      <span class="tag">Producto destacado</span>
-      <h2>La primera herramienta de NavRule</h2>
+      <span class="tag">Herramientas de Cálculo</span>
+      <h2>Seleccione la herramienta que desee</h2>
     </div>
-    <div class="spot-card">
-      <div class="spot-text">
-        <span class="spot-tag">Software</span>
+    <div class="spot-grid">
+      <div class="spot-card">
+        <span class="spot-tag spot-tag-calcgm">Calc-GM</span>
         <h3>Prueba de Inclinación</h3>
         <p>Carga los datos, calcula pesos y movimientos, péndulos y gradiente, GM por regresión y buque en rosca — y arma el informe final listo para presentar ante la autoridad certificadora.</p>
         <div class="spot-ctas">
           <a href="/prueba-de-inclinacion" class="btn btn-primary">Ver la herramienta</a>
           <a href="/app" class="btn btn-outline">Ingresar a la app</a>
+        </div>
+      </div>
+      <div class="spot-card">
+        <span class="spot-tag spot-tag-optima">Optima-Prop</span>
+        <h3>Selección de Hélice</h3>
+        <p>Calcula la hélice óptima para satisfacer condiciones antagónicas de funcionamiento, alcanzar la máxima velocidad o el máximo tiro, y determina el punto de funcionamiento del motor, graficando la curva en su diagrama. Evalúa el desempeño para distintas combinaciones de diámetro, paso, revoluciones y potencia entregada, verificando criterios de cavitación y ruido.</p>
+        <div class="spot-ctas">
+          <a href="/seleccion-helice" class="btn btn-primary">Ver la herramienta</a>
+          <a href="/app-helice" class="btn btn-outline">Ingresar a la app</a>
         </div>
       </div>
     </div>
@@ -183,7 +188,7 @@ footer a:hover{color:#fff}
     <div class="about-card">
       <span class="section-hd"><span class="tag">Nosotros</span></span>
       <p>Impulsado por el Ing. Juan Carlos Cubisino, profesional con más de 40 años de trayectoria en el diseño de buques, normativa nacional e internacional, reglamentos de construcción y análisis estructural, NavRule pone a disposición aplicaciones desarrolladas junto a un equipo multidisciplinario de especialistas.</p>
-      <a href="/nosotros" class="link">Conocé más sobre NavRule →</a>
+      <a href="/nosotros" class="link">Conozca más sobre NavRule →</a>
     </div>
   </div>
 </section>
